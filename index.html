@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نظام إدارة وصيانة المعدات - نموذج تجريبي</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f3f5f7;color:#17202a}
+header{background:#1f2937;color:white;padding:18px}
+.container{max-width:900px;margin:auto;padding:16px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.card,.panel{background:white;border-radius:12px;padding:16px;box-shadow:0 2px 8px #0001;margin-bottom:14px}
+.card b{font-size:25px;display:block;margin-top:8px}
+nav{display:flex;gap:8px;overflow:auto;margin:14px 0}
+button{border:0;border-radius:9px;padding:11px 14px;background:#374151;color:white;cursor:pointer}
+button.active{background:#111827}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid #eee;text-align:right}
+.badge{padding:5px 9px;border-radius:20px;background:#e5e7eb}
+.ok{background:#dcfce7}.warn{background:#fef3c7}.bad{background:#fee2e2}
+input,select,textarea{width:100%;box-sizing:border-box;padding:10px;border:1px solid #d1d5db;border-radius:8px;margin:5px 0 12px}
+.section{display:none}.section.show{display:block}
+@media(max-width:650px){.cards{grid-template-columns:repeat(2,1fr)}}
+
+.login-overlay{position:fixed;inset:0;background:#111827;display:flex;align-items:center;justify-content:center;z-index:9999}
+.login-box{background:white;width:min(90%,380px);padding:24px;border-radius:16px;box-shadow:0 10px 30px #0005}
+.login-box h2{margin-top:0}
+.login-error{color:#b91c1c;display:none;margin:8px 0}
+#app{display:none}
+</style>
+</head>
+<body>
+<div class="login-overlay" id="loginScreen">
+  <div class="login-box">
+    <h2>تسجيل الدخول</h2>
+    <label>اسم المستخدم</label>
+    <input id="username" type="text" placeholder="أدخل اسم المستخدم">
+    <label>كلمة المرور</label>
+    <input id="password" type="password" placeholder="أدخل كلمة المرور">
+    <div class="login-error" id="loginError">اسم المستخدم أو كلمة المرور غير صحيحة</div>
+    <button onclick="login()">دخول</button>
+  </div>
+</div>
+<div id="app">
+<header><div class="container"><h2>نظام إدارة وصيانة المعدات</h2><div>نموذج تجريبي - بيانات افتراضية</div></div></header>
+<div class="container">
+<nav>
+<button class="active" onclick="show('home',this)">الرئيسية</button>
+<button onclick="show('equip',this)">المعدات</button>
+<button onclick="show('inspect',this)">الفحص الدوري</button>
+<button onclick="show('fault',this)">تسجيل عطل</button>
+<button onclick="show('report',this)">التقارير</button>
+</nav>
+
+<section id="home" class="section show">
+<div class="cards">
+<div class="card">إجمالي المعدات<b>120</b></div>
+<div class="card">جاهزة<b>108</b></div>
+<div class="card">تحت الإصلاح<b>8</b></div>
+<div class="card">تحتاج فحص<b>4</b></div>
+</div>
+<div class="panel"><h3>حالة المعدات اليوم</h3>
+<table><tr><th>المعدة</th><th>النوع</th><th>الحالة</th></tr>
+<tr><td>L-01</td><td>Loader</td><td><span class="badge ok">جاهزة</span></td></tr>
+<tr><td>L-02</td><td>Loader</td><td><span class="badge warn">تحتاج فحص</span></td></tr>
+<tr><td>C-15</td><td>Truck</td><td><span class="badge ok">جاهزة</span></td></tr>
+<tr><td>CR-03</td><td>Crane</td><td><span class="badge bad">إصلاح</span></td></tr>
+</table></div>
+</section>
+
+<section id="equip" class="section">
+<div class="panel"><h3>ملف المعدة L-01</h3>
+<p><b>النوع:</b> Loader</p><p><b>ساعات التشغيل:</b> 8,250 ساعة</p><p><b>آخر فحص:</b> 03/09/2026</p>
+<p><b>آخر عطل:</b> تسريب زيت من خرطوم هيدروليك</p>
+<button onclick="show('inspect')">بدء الفحص</button>
+</div></section>
+
+<section id="inspect" class="section">
+<div class="panel"><h3>الفحص الدوري - L-01</h3>
+<label>المحرك</label><select><option>سليم</option><option>يحتاج متابعة</option><option>عطل</option></select>
+<label>الهيدروليك</label><select><option>سليم</option><option>يحتاج متابعة</option><option>عطل</option></select>
+<label>الفتيس</label><select><option>سليم</option><option>يحتاج متابعة</option><option>عطل</option></select>
+<label>الفرامل</label><select><option>سليم</option><option>يحتاج متابعة</option><option>عطل</option></select>
+<label>الكهرباء</label><select><option>سليم</option><option>يحتاج متابعة</option><option>عطل</option></select>
+<button onclick="alert('تم حفظ الفحص التجريبي بنجاح')">حفظ الفحص</button>
+</div></section>
+
+<section id="fault" class="section">
+<div class="panel"><h3>تسجيل عطل</h3>
+<label>المعدة</label><select><option>L-01</option><option>L-02</option><option>C-15</option><option>CR-03</option></select>
+<label>نوع العطل</label><select><option>هيدروليك</option><option>محرك</option><option>فتيس</option><option>كهرباء</option><option>فرامل</option></select>
+<label>وصف العطل</label><textarea rows="3" placeholder="مثال: تسريب زيت من خرطوم هيدروليك"></textarea>
+<label>قطعة الغيار المستخدمة</label><input placeholder="مثال: خرطوم هيدروليك">
+<label>وقت بداية الإصلاح</label><input type="time">
+<label>وقت انتهاء الإصلاح</label><input type="time">
+<button onclick="alert('تم تسجيل العطل في النموذج التجريبي')">حفظ البلاغ</button>
+</div></section>
+
+<section id="report" class="section">
+<div class="panel"><h3>لوحة الإدارة - مؤشرات تجريبية</h3>
+<table><tr><th>المؤشر</th><th>القيمة</th></tr>
+<tr><td>ساعات توقف المعدات هذا الشهر</td><td>340 ساعة</td></tr>
+<tr><td>أكثر عطل تكرارًا</td><td>خراطيم هيدروليك</td></tr>
+<tr><td>أعلى معدة في الأعطال</td><td>L-02</td></tr>
+<tr><td>متوسط زمن الإصلاح MTTR</td><td>3.4 ساعة</td></tr>
+<tr><td>متوسط الزمن بين الأعطال MTBF</td><td>126 ساعة</td></tr>
+</table>
+<p><small>الأرقام للتجربة فقط، ويتم استبدالها ببيانات الشركة الفعلية في التطبيق.</small></p>
+</div></section>
+</div>
+<script>
+function show(id,btn){
+ document.querySelectorAll('.section').forEach(x=>x.classList.remove('show'));
+ document.getElementById(id).classList.add('show');
+ document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+ if(btn) btn.classList.add('active');
+ window.scrollTo(0,0);
+}
+</script>
+</div>
+<script>
+function login(){
+  const u=document.getElementById('username').value.trim().toLowerCase();
+  const p=document.getElementById('password').value.trim();
+  const users = {
+    'ahmed ibrahim':'1234',
+    'ahmed taher':'1234'
+  };
+  if(users[u] === p){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('app').style.display='block';
+  }else{
+    document.getElementById('loginError').style.display='block';
+  }
+}
+</script>
+</body>
+</html>
